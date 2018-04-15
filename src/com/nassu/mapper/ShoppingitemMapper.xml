@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nassu.mapper.ShoppingitemMapper">
+  <resultMap type="shoppingItem" id="shoppingItemWrapper">
+    <id property="siid" column="siid"/>
+    <result property="count" column="count"/>
+    <result property="total" column="total"/>
+    <result property="uid" column="uid"/>
+    <result property="bid" column="bid"/>
+    <result property="oid" column="oid"/>
+    
+    <collection property="book" column="bid" select="com.nassu.mapper.BookMapper.readById"></collection>
+  </resultMap>
+
+  <update id="bidSetNull" parameterType="book">
+    update bs_shoppingitem set bid = null where bid = #{bid}
+  </update>
+  
+  <delete id="deleteByUid" parameterType="user">
+    delete from bs_shoppingitem where uid = #{uid}
+  </delete>
+  
+  <insert id="add" parameterType="shoppingItem">
+    insert into bs_shoppingitem(siid, count, total, uid, bid) values(#{siid}, #{count}, #{total}, #{uid}, #{bid})
+  </insert>
+  
+  <update id="delete" parameterType="shoppingItem">
+    delete from bs_shoppingitem where siid = #{siid}
+  </update>
+  
+  <update id="modify" parameterType="shoppingItem">
+    update bs_shoppingitem set count = #{count}, total = #{total} where siid = #{siid}
+  </update>
+  
+  <select id="readById" parameterType="string" resultType="shoppingItem">
+    select siid, count, total, uid, bid, oid from bs_shoppingitem where siid = #{siid}
+  </select>
+  
+  <select id="readByUidInCart" parameterType="string" resultMap="shoppingItemWrapper">
+    select siid, count, total, uid, bid, oid from bs_shoppingitem where uid = #{uid} and oid is null
+  </select>
+  
+  <select id="findShoppingItemInCart" parameterType="shoppingItem" resultType="shoppingItem">
+    select siid, count, total, uid, bid, oid from bs_shoppingitem where bid = #{bid} and uid = #{uid} and oid is null
+  </select>
+  
+  <delete id="clearInCart" parameterType="string">
+    delete from bs_shoppingitem where uid = #{uid} and oid is null
+  </delete>
+  
+  <update id="addIntoOrder" parameterType="shoppingItem">
+    update bs_shoppingitem set oid = #{oid} where uid = #{uid} and oid is null
+  </update>
+  
+  <select id="readByOid" parameterType="string" resultMap="shoppingItemWrapper">
+    select siid, count, total, uid, bid, oid from bs_shoppingitem where oid = #{oid}
+  </select>
+  
+  <update id="clearByUid" parameterType="string">
+    delete from bs_shoppingitem where uid = #{uid}
+  </update>
+</mapper>

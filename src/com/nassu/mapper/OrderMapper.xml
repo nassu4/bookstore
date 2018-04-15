@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nassu.mapper.OrderMapper">
+  <resultMap type="order" id="orderWrapper">
+    <id property="oid" column="oid"/>
+    <result property="time" column="time"/>
+    <result property="total" column="total"/>
+    <result property="state" column="state"/>
+    <result property="uid" column="uid"/>
+    
+    <collection property="list" column="oid" select="com.nassu.mapper.ShoppingitemMapper.readByOid"></collection>
+  </resultMap>
+
+  <delete id="deleteByUid" parameterType="user">
+    delete from bs_order where uid = #{uid}
+  </delete>
+
+  <insert id="add" parameterType="order">
+    insert into bs_order(oid, time, total, state, address, uid) values(#{oid}, #{time}, #{total}, #{state}, #{address}, #{uid})
+  </insert>
+  
+  <update id="modify" parameterType="order">
+    update bs_order set state = #{state}, address = #{address} where oid = #{oid}
+  </update>
+  
+  <select id="readById" parameterType="string" resultType="order">
+    select oid, time, total, state, address, uid from bs_order where oid = #{oid}
+  </select>
+  
+  <select id="readByUidDesc" parameterType="string" resultMap="orderWrapper">
+    select oid, time, total, state, address, uid from bs_order where uid = #{uid} order by time desc
+  </select>
+  
+  <select id="findAllByDesc" resultMap="orderWrapper">
+    select oid, time, total, state, address, uid from bs_order order by time desc
+  </select>
+  
+  <select id="findByStateDesc" parameterType="int" resultMap="orderWrapper">
+    select oid, time, total, state, address, uid from bs_order where state = #{state} order by time desc
+  </select>
+</mapper>

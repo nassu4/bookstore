@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nassu.mapper.BookMapper">
+  <update id="cidSetNull" parameterType="category">
+    update bs_book set cid = null where cid = #{cid}
+  </update>
+
+  <insert id="add" parameterType="book">
+    insert into bs_book(bid, name, price, author, image, cid) values(#{bid}, #{name}, #{price}, #{author}, #{image}, #{cid})
+  </insert>
+  
+  <delete id="delete" parameterType="book">
+    delete from bs_book where bid = #{bid}
+  </delete>
+  
+  <update id="modify" parameterType="book">
+    update bs_book set name = #{name}, price = #{price}, author = #{author}, image= #{image}, cid = #{cid} where bid = #{bid}
+  </update>
+  
+  <select id="readById" parameterType="string" resultType="book">
+    select bid, name, price, author, image, cid from bs_book where bid = #{bid}
+  </select>
+  
+  <select id="readByCid" parameterType="string" resultType="book">
+    select bid, name, price, author, image, cid from bs_book where cid = #{cid}
+  </select>
+  
+  <select id="findAllBook" resultType="book">
+    select bid, name, price, author, image, cid from bs_book
+  </select>
+  
+  <update id="deleteByCid" parameterType="string">
+    delete from bs_book where cid = #{cid}
+  </update>
+  
+  <select id="count" resultType="long">
+    select count(*) from bs_book
+  </select>
+  
+  <select id="readByImage" parameterType="string" resultType="book">
+    select bid, name, price, author, image, cid from bs_book where image = #{image}
+  </select>
+</mapper>

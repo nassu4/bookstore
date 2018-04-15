@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE c3p0-config [
+	<!ELEMENT c3p0-config (default-config)>
+	<!ELEMENT default-config (property*)>
+	<!ELEMENT property (#PCDATA)>
+	<!ATTLIST property name CDATA #REQUIRED> 
+]>
+<c3p0-config>
+  <default-config>
+    <property name="driverClass">com.mysql.jdbc.Driver</property>
+    <property name="jdbcUrl">jdbc:mysql:///bookstore?useSSL=true</property>
+    <property name="user">root</property>
+    <property name="password">123456</property>
+  </default-config>
+</c3p0-config>
